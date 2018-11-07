@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Woodkios</title>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="stylesheets/styles.css"> -->
+</head>
+<!-- <body class="bglogin"> -->
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <a class="navbar-brand" href="homeadmin.html">Woodkios</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="my-2 my-md-0 mr-md-3">
+                <!-- <a class="p-2 text-dark" href="guest.html">Guest</a> -->
+                <!-- <a class="p-2 text-dark" href="guest.html">Guest</a> -->
+                <!-- <a class="btn btn-outline-primary" href="#">Cart</a> -->
+                <!-- <a class="btn btn-outline-primary" href="tambahbarang.html">Add Product</a> -->
+                <!-- <a class="btn btn-outline-primary" href="register.html">Register</a> -->
+            </nav>
+            <!-- <a class="btn btn-outline-primary" href="login.html">Login</a> -->
+            <a class="btn btn-outline-primary" href="#">Logout</a>
+        </div>
+        <div class="container">
+            <!-- <form class="form-signin"> -->
+                <div class="text-center mb-4">
+                    <h1 class="h3 mb-3 font-weight-normal">Add Product Here!</h1>
+                </div>
+                <form action="/profile" method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile04">
+                            <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button">Button</button>
+                        </div>
+                    </div>
+                    <br>
+                <div class="form-label-group">
+                    <input type="text" id="name" class="form-control" placeholder="Name Product" required autofocus autocomplete="off">
+                </div>
+                <br>
+                <div class="form-label-group">
+                    <input type="text" id="material" class="form-control" placeholder="Material" required autofocus autocomplete="off">
+                </div>
+                <br>
+                <div class="form-label-group">
+                    <input type="text" id="size" class="form-control" placeholder="Size" required autofocus>
+                </div>
+                <br>
+                <div class="form-label-group">
+                    <input type="text" id="price" class="form-control" placeholder="Price" required autofocus>
+                </div>
+                <br>
+                <div class="form-label-group">
+                    <input type="text" id="discount" class="form-control" placeholder="Discount" required autofocus>
+                </div>
+                <br>
+                <br>  
+                <button class="btn btn-outline-primary" id="reg">Submit</button>
+                <a class="btn btn-primary" id="add_detail" href="add_detail.html">Add detail</a>
+            </form>
+                <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
+                <!-- </form> -->
+            </div>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            <script async>
+                (async()=>{
+                    const register = document.getElementById("reg")
+                    register.addEventListener("click",async()=>{
+                        const pic  = $('#picture').val()
+                        const nama  = $('#name').val()
+                        const bahan  = $('#material').val()
+                        const ukuran  = $('#size').val()
+                        const harga = $('#price').val()
+                        const disc = $('#discount').val()
+                        const reglink = "http://localhost:3000/products"
+                        try{
+                            const data = await axios.post(reglink,{
+                                picture:pic,
+                                name:nama,
+                                material:bahan,
+                                size:ukuran,
+                                price:harga,
+                                discount:disc
+                            })  
+                            console.log(data)
+                            alert("Success")
+                            window.location.href="homeadmin.html"
+                        }catch(error){
+                            console.log(error)
+                        }
+                    })
+                })()
+            </script>
+        </body>
+        </html>

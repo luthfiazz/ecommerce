@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Woodkios</title>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/styles.css">
+</head>
+<!-- <body class="bglogin"> -->
+  <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <a class="navbar-brand" href="index.html">Woodkios</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <!-- <a class="p-2 text-dark" href="guest.html">Guest</a> -->
+        <a class="btn btn-outline-primary" href="#">Cart</a>
+        <a class="btn btn-outline-primary" href="register.html">Register</a>
+      </nav>
+      <a class="btn btn-outline-primary" href="login.html" >Login</a>
+    </div>
+    <div class="container">
+      <!-- <form class="form-signin"> -->
+        <div class="text-center mb-4">
+          <h1 class="h3 mb-3 font-weight-normal">Register Here!</h1>
+        </div>
+        <div class="form-label-group">
+          <input type="text" id="fullname" class="form-control" placeholder="Fullname" required autofocus autocomplete="off">
+        </div>
+        <br>
+        <div class="form-label-group">
+          <input type="email" id="email" class="form-control" placeholder="Email" required autofocus autocomplete="off">
+        </div>
+        <br>
+        <div class="form-label-group">
+          <input type="password" id="password" class="form-control" placeholder="Password" required autofocus>
+        </div>
+        <br>
+        <div class="form-label-group">
+          <input type="text" id="no_telepone" class="form-control" placeholder="No Telephone" required autofocus>
+        </div>
+        <br>
+        <div class="form-label-group">
+          <textarea class="form-control"  id="address" cols="30" rows="10" placeholder="Address" required autofocus></textarea>
+          <!-- <input type="text" id="address" class="form-control" placeholder="Address" required autofocus> -->
+        </div>
+        <br>
+        <br>  
+        <button class="btn btn-outline-primary" id="reg">Submit</button>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
+        <!-- </form> -->
+      </div>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script async>
+        (async()=>{
+          const register = document.getElementById("reg")
+          register.addEventListener("click",async()=>{
+            const name  = $('#fullname').val()
+            const mail  = $('#email').val()
+            const pass  = $('#password').val()
+            const phone = $('#no_telepone').val()
+            const add = $('#address').val()
+            const reglink = "http://localhost:3000/users"
+            try{
+              const data = await axios.post(reglink,{
+                fullname:name,
+                email:mail,
+                password:pass,
+                no_telepone:phone,
+                address:add
+              })  
+              console.log(data)
+              if (data.data.token) {
+                localStorage.setItem('token',`Bearer ${data.data.token}`)
+                window.location ='login.html' 
+              }else {
+                alert('Success')
+              }
+            }catch (error){
+              console.log(error)
+            }
+          })
+        })()
+      </script>
+    </body>
+    </html>
