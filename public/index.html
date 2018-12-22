@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link href="stylesheets/pricing.css" rel="stylesheet">
@@ -20,23 +21,63 @@
         </button>
       <nav class="my-2 my-md-0 mr-md-3">
         <!-- <a class="p-2 text-dark" href="guest.html">Guest</a> -->
-        <a class="btn btn-outline-primary" href="#">Cart</a>
+        <a class="btn btn-outline-primary" href="cart.html">Cart</a>
         <a class="btn btn-outline-primary" href="register.html">Register</a>
       </nav>
       <a class="btn btn-outline-primary" href="login.html">Login</a>
     </div>
 <!-- product -->
+</div>
+<!-- product -->
 <div class="container">
-  <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="images/1.jpg" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">Cubus Stool</h5>
-        <p class="card-text">Price</p>
-        <p class="card-text">Size</p>
-        <p class="card-text">Material</p>
-        <a href="#" class="btn btn-primary">Buy</a>
-      </div>
+    <div class="row" id="item-card">
     </div>
 </div>
+    
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+crossorigin="anonymous"></script>
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script async>
+        (async () => {
+            
+            const getdata = 'http://localhost:3000/products/'
+            const result = await axios.get(getdata, {
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            })
+            
+            
+            const results = result.data
+            console.log(result);
+            $('#item-card').append(
+            results.map(product => (
+            `
+            
+            <div class="card ml-2 mr-2 col-sm-4 col-md-3 mb-3"  style="width: 18rem;">
+                <img class="card-img-top" src="${product.picture}" alt="Card image cap"/>
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">${product.material}</p>
+                    <p class="card-text">${product.size}</p>
+                    <p class="card-text">${product.price}</p>
+                    <p class="card-text">${product.discount}</p>
+                    <a href="#" class="btn btn-primary">Buy</a>
+                    <a href="#" class="btn btn-danger">Wish</a>
+                </div>
+            </div>`
+            
+            )))
+            
+        })()
+    </script>
   </body>
 </html>

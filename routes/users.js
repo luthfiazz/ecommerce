@@ -10,7 +10,7 @@ router.get('/', async (req, res)=> {
 });
 // console.log(data)
 
-router.get('/', async (req, res)=>{
+router.get('/:id', async (req, res)=>{
   const {id} =req.User
 
   try{

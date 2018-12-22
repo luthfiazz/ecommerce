@@ -45,91 +45,34 @@
       if (!access) {
         window.location.href='login.html'
       }
-    //   // POST data Short
-    //   const btnshort = document.getElementById("shortsub")
-    //   btnshort.addEventListener("click",async()=>{
-    //     const titles = $('#title').val()
-    //     const shorts = $('#short').val()
-    //     const urls= $('#url').val()
-    //     const addlink = "http://localhost:5000/api/addshort"
-    //     try{
-    //       const data = await axios.post(addlink,{
-    //         title:titles,
-    //         short:shorts,
-    //         url:urls
-    //       },{
-    //         headers:{
-    //           Authorization:localStorage.getItem('token')
-    //         }
-    //       })
-    //       alert('Success')
-    //       window.location.href='home.html'
-    //       console.log(data)
-    //     }catch (error){
-    //       console.log(error)
-    //     }
-    //   })
+    
+    // GET data barang
+    const getdata = 'http://localhost:3000/products'
+              const result = await axios.get(getdata,{
+                headers:{
+                  Authorization:localStorage.getItem('token')
+                }
+              })
+              
+              console.log(result)
+              const results = result.data
+              results.map(itembarang=>{
+                $('.card').append(`
+                <div>
+                  <img class="card-img-top" src="images/1.jpg" alt="Card image cap">
+                  <p>${itembarang.picture}</p>
+                  <p>${itembarang.name}</p>
+                  <p>${itembarang.material}</p>
+                  <p>${itembarang.size}</p>
+                  <p>${itembarang.price}</p>
+                  <p>${itembarang.discount}</p>
+                  <p><a href ="edit.html?id=${itembarang.id}" class ="btn btn-dark" id="shortedit-${itembarang.id}">Edit</a>
+                      <button class ="btn btn-dark" id="shorthapus-${itembarang.id}">Hapus</button>
+                  </p>
+                  </div>
+                  `)
+                })
 
-      
-
-    //   // GET data Short
-    //   const getdata = 'http://localhost:5000/api/track/'
-    //   const result = await axios.get(getdata,{
-    //     headers:{
-    //       Authorization:localStorage.getItem('token')
-    //     }
-    //   })
-      
-    //   console.log(result)
-    //   const results = result.data
-    //   results.map(short=>{
-    //     $('#listdata').append(`
-    //     <tr>
-    //       <td>${short.title}</td>
-    //       <td>${short.short}</td>
-    //       <td>${short.url}</td>
-    //       <td>${short.tracks.length}</td>
-    //       <td><a href ="edit.html?id=${short.id}" class ="btn btn-dark" id="shortedit-${short.id}">Edit</a>
-    //           <button class ="btn btn-dark" id="shorthapus-${short.id}">Hapus</button>
-    //       </td>
-    //       </tr>
-    //       `)
-    //   //     const btnedit = document.getElementById(`shortedit-${short.id}`)
-    //   //   btnedit.addEventListener("click",async()=>{
-    //   //   const editlink = "http://localhost:5000/short"
-      
-    //   //     alert('Edit data')
-    //   //     window.location.href='edit.html'
-    //   //     console.log(dataedit)
-        
-    //   // })
-      
-    //     // DELETE data
-    //     const btndelete = document.getElementById(`shorthapus-${short.id}`)
-    //    const hapuslink ="http://localhost:5000/api/delete/"
-    //    btndelete.addEventListener("click",async()=>{
-    //      const a = await axios.delete(hapuslink+short.id,{
-    //        headers:{
-    //          Authorization : localStorage.getItem('token')
-    //         }
-    //       })
-    //       // console.log('juhjuhuj ')
-    //       if (a) {
-    //           alert('hapus data?') 
-    //         window.location.href='home.html'
-    //       }else{
-    //       alert('Delete gagal')
-
-    //       }
-    //    })
-
-    //     })
-        
-    //     // datatabel
-    //     $(document).ready(function() {
-    //       $('#datatabel').DataTable();
-    //     });
-        
         // logout
     const logout = document.getElementById('logout')
     logout.addEventListener('click',async () => {

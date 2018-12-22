@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="stylesheets/styles.css"> -->
+    <!-- <link href="stylesheets/pricing.css" rel="stylesheet"> -->
+    <title>Woodkios</title>
+</head>
+<!-- <body class="bglogin"> -->
+
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom box-shadow">
+        <a class="navbar-brand" href="tampilbarang.html">Woodkios Dashboard Admin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <!-- <a class="p-2 text-dark" href="guest.html">Guest</a> -->
+            <!-- <a class="btn btn-outline-primary" href="cart.html">Cart</a>
+                <a class="btn btn-outline-primary" href="register.html">Register</a> -->
+            <a class="btn btn-outline-primary" href="tambahbarang.html">Add Product</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="login.html">Logout</a>
+    </div>
+    <!-- product -->
+    <div class="container">
+        <div class="row" id="item-card">
+        </div>
+        <div class="modal fade" id="My-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Product!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    
+                        <form>
+                            <input type="hidden" value="" id="id">
+                            <div>
+                                <img src="./1.jpg" alt="" id ="picture1" class="img-responsive">
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="picture" name="picture">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Material:</label>
+                                <input type="text" class="form-control" id="material">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Size:</label>
+                                <input type="text" class="form-control" id="size">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Price:</label>
+                                <input type="text" class="form-control" id="price">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Discount:</label>
+                                <input type="text" class="form-control" id="discount">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"id="ok">Submit</button>
+                        <!-- <button class="btn btn-primary" id="add_detail" href="add_detail.html">Add detail</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script async>
+        (async () => {
+
+            const getdata = 'http://localhost:3000/products/'
+            const result = await axios.get(getdata, {
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            })
+
+            const results = result.data
+            console.log(result);
+            $('#item-card').append(
+                results.map(product => (
+                    `
+                <div class="card ml-2 mr-2 col-sm-4 col-md-3 mb-3"  style="width: 18rem;">
+                    <img class="card-img-top" src="${product.picture}" alt="Card image cap"/>
+                    <div class="card-body">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text">${product.material}</p>
+                        <p class="card-text">${product.size}</p>
+                        <p class="card-text">${product.price}</p>
+                        <p class="card-text">${product.discount}</p>
+
+                        <button type="button"  class="btn btn-primary" data-toggle="modal" 
+                        data-target="#My-Modal" data-whatever="@mdo" data-id="${product.id}"
+                        data-picture1="${product.picture}",
+                        data-name="${product.name}",
+                        data-material="${product.material}",
+                        data-size="${product.size}",
+                        data-price="${product.price}",
+                        data-discount="${product.discount}"
+                        >Edit</button>
+                        <button class="btn btn-primary delete" data-id="${product.id}">Delete</button>
+                    </div>
+                </div>`
+
+                )))
+
+            // Delete
+            $('#item-card').on('click', '.delete', async (event) => {
+                const id = event.target.dataset.id
+                const hapuslink = "http://localhost:3000/products/"
+                const a = await axios.delete(hapuslink + id, {
+                    headers: {
+                        Authorization: localStorage.getItem('token')
+                    }
+                })
+                if (a) {
+                    alert('hapus data?')
+                    window.location.href = 'tampilbarang.html'
+                } else {
+                    alert('Cancel')
+
+                }
+            })
+
+
+            // edit
+            $('#ok').on('click', async ()=> {
+                // alert('ok')
+                const id = $('#id').val();
+                const updatelink = "http://localhost:3000/products/"
+
+                const pictureupdate = $('#picture').val()
+                const nameupdate = $('#name').val();
+                const materialupdate = $('#material').val();
+                const sizeupdate = $('#size').val();
+                const priceupdate = $('#price').val();
+                const discountupdate = $('#discount').val();
+                const data = await axios.put(updatelink+id, {
+
+                    picture: pictureupdate,
+                    name: nameupdate,
+                    material: materialupdate,
+                    size: sizeupdate,
+                    price: priceupdate,
+                    discount: discountupdate
+
+                }, {
+                    headers: {
+                        Authorization: localStorage.getItem('token')
+                    }
+                })
+                console.log(data.data);
+                window.location.href = "tampilbarang.html"
+
+            })
+
+
+            $('#My-Modal').on('show.bs.modal', function (e){
+                // console.log(e.relatedTarget.dataset.price);
+
+                const id = $('#id').val(e.relatedTarget.dataset.id)
+                const pictureupdate = $('#picture1').attr("src", e.relatedTarget.dataset.picture1);
+                const nameupdate = $('#name').val(e.relatedTarget.dataset.name);
+                const materialupdate = $('#material').val(e.relatedTarget.dataset.material);
+                const sizeupdate = $('#size').val(e.relatedTarget.dataset.size);
+                const priceupdate = $('#price').val(e.relatedTarget.dataset.price);
+                const discountupdate = $('#discount').val(e.relatedTarget.dataset.discount);
+               
+            })
+            
+
+
+
+
+        })()
+    </script>
+
+</body>
+
+</html>

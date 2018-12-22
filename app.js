@@ -8,6 +8,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authsRouter = require('./routes/auths');
 const productsRouter = require('./routes/products');
+const detailproductsRouter = require('./routes/detailproducts');
+const cartsRouter = require('./routes/carts');
 
 const app = express();
 const passport = require('passport')
@@ -22,6 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,6 +34,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auths', authsRouter);
 app.use('/products', productsRouter);
+app.use('/detailproducts', detailproductsRouter);
+app.use('/carts', cartsRouter);
 
 
   app.listen(3000,function(){

@@ -1,14 +1,39 @@
 const express = require('express');
 const router = express.Router();
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+const passport = require('../helper/auth');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null,file.originalname);
+  }
+});
 const {
   User,
   Product,
   Detailproduct
 } = require('../db/models');
-const passport = require('../helper/auth');
 
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 *5
+  },
+  fileFilter: fileFilter
+});
 /* GET products listing. */
 
 router.get('/', passport.authenticate('jwt'), async (req, res) => {
@@ -36,35 +61,29 @@ router.get('/:id', async (req, res) => {
   res.json(data);
 });
 
-router.post('/', upload.single('avatar'), (req, res) => {
-  if (!req.file) {
-    console.log("No file received");
-    return res.send({
-      success: false
-    });
-
-  } else {
-    console.log('file received');
-    return res.send({
-      success: true
-    })
-  }
-});
 
 /* POST products listing. */
-router.post('/', passport.authenticate('jwt'), async (req, res) => {
+router.post('/',passport.authenticate('jwt'), upload.single('picture'), async (req, res) => {
+  console.log('aaa',req.file);
+  const picture =req.file.originalname
   const {
-    picture,
     name,
     size,
     material,
     price,
-    discount
+    discount,
+    stock,
+    quantity,
+    weight,
+    color,
+    description
   } = req.body
+  
   const {
     id
   } = req.user
-  console.log(id)
+  
+  console.log(req.body)
   const data = await Product.create({
     picture,
     name,
@@ -74,7 +93,28 @@ router.post('/', passport.authenticate('jwt'), async (req, res) => {
     discount,
     id_user: id
   })
-  res.json(data)
+  const data2 = await Detailproduct.create({
+    stock,
+    quantity,
+    weight,
+    color,
+    description,
+    id:data.id
+    
+  })
+  // console.log('ssss',data);
+  if (!req.file) {
+    console.log("No file received");
+    return res.send({
+      success: false
+    });
+  } else {
+    console.log('file received');
+    return res.send({
+      success:true,
+      data,data2
+    })
+  }
 })
 
 /* PUT products listing. */
@@ -100,7 +140,7 @@ router.put('/:id', async (req, res) => {
     discount
   }, {
     where: {
-      id_user: id
+      id: id
     }
   })
   res.json(data)
@@ -113,7 +153,6 @@ router.delete('/:id', async (req, res) => {
     id
   } = req.params
 
-  console.log(req.params)
   const data = await Product.destroy({
     where: {
       id: id

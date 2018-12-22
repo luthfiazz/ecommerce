@@ -8,14 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     id_product: DataTypes.STRING
   }, {});
-  // Detailproduct.associate = function(models) {
-  //   // associations can be defined here
-  //   Detailproduct.hasMany(models.Cart,{
-  //     foreignKey:'id_detailproduct'
-  //   })
-  //   Detailproduct.belongsTo(models.Product,{
-  //     foreignKey:'id_product'
-  //   })
-  // };
+  Detailproduct.associate = function(models) {
+    // associations can be defined here
+    // Detailproduct.belongsTo(models.Product,{
+    //   foreignKey:'id_product'
+    // })
+  };
   return Detailproduct;
 };
